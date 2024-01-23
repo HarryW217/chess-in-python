@@ -27,10 +27,17 @@ black_locations = [(0,7), (1,7), (2,7), (3,7), (4,7), (5,7), (6,7), (7,7),
 captured_pieces_white = []
 captured_pieces_white = []
 
+turn_step = 0 # Keeps track of the phase of each turn
+# 0 - White's turn, no selection; 1 - White's turn, piece selected;
+# 2 - Black's turn, no selection; 3 - Black's turn, piece selected etc.
+
+selection = 100 # A variable for piece selected, initially a large number not on the board. 
+
+valid_moves = [] # A list for valid moves a piece can make
+
 # RGB values for dark brown
 
 dark_brown = (101, 67, 33)
-
 
 # Main Game Loop
 run = True
