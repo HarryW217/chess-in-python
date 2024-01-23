@@ -39,7 +39,7 @@ valid_moves = [] # A list for valid moves a piece can make
 # All loaded and scaled for display on the board and captured pieces section
 black_queen = pygame.image.load('assets/images/black queen.png')
 black_queen = pygame.image.scale(black_queen, (80,80))
-black_queen_small = pygame.image.scale(black_queen, (45,45))
+black_queen_small = pygame.transform.scale(black_queen, (45,45))
 black_king = pygame.image.load('assets/images/black king.png')
 black_king = pygame.transform.scale(black_king, (80, 80))
 black_king_small = pygame.transform.scale(black_king, (45, 45))
