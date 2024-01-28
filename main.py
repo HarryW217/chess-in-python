@@ -80,18 +80,34 @@ black_images = [black_pawn, black_queen, black_king, black_knight, black_rook, b
 small_black_images = [black_pawn_small, black_queen_small, black_king_small, black_knight_small, black_rook_small, black_bishop_small]
 
 piece_list = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop']
+
 # check variables/ flashing counter
 
 
-# RGB values for dark brown
+# RGB values for colors
 
+light_brown = (205, 133, 63)
 dark_brown = (101, 67, 33)
+
+# Draw main game board
+def draw_board():
+    for i in range(32):
+        column = i % 4
+        row = i // 4
+        if row % 2 == 0:
+            pygame.draw.rect(screen, light_brown, [600-(column * 200), row * 100, 100, 100])
+        else:
+            pygame.draw.rect(screen, light_brown, [700-(column * 200), row * 100, 100, 100])
+
+
+
 
 # Main Game Loop
 run = True
 while run:
     timer.tick(fps)
     screen.fill(dark_brown)
+    draw_board()
     
     # Event handling
     for event in pygame.event.get():
