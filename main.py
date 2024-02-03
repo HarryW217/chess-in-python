@@ -98,9 +98,10 @@ def draw_board():
             pygame.draw.rect(screen, light_brown, [600-(column * 200), row * 100, 100, 100])
         else:
             pygame.draw.rect(screen, light_brown, [700-(column * 200), row * 100, 100, 100])
-
-
-
+        pygame.draw.rect(screen, 'gray', [0, 800, WIDTH, 100])
+        pygame.draw.rect(screen, 'gold', [0, 800, WIDTH, 100], 5)
+        pygame.draw.rect(screen, 'gray', [800, 0, 200, 800])
+        pygame.draw.rect(screen, 'gold', [800, 0, 200, HEIGHT], 5)
 
 # Main Game Loop
 run = True
