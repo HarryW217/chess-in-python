@@ -89,7 +89,6 @@ piece_list = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop']
 light_brown = (205, 133, 63)
 dark_brown = (101, 67, 33)
 
-# Draw main game board
 def draw_board():
     for i in range(32):
         column = i % 4
@@ -108,6 +107,23 @@ def draw_board():
         for i in range(9):
             pygame.draw.line(screen, 'black', ((100*i),0),((100*i),800))
             pygame.draw.line(screen, 'black', (0,(100*i)),(800,(100*i)))
+            
+def draw_pieces():
+    # White Pieces
+    for i in range(len(white_pieces)):
+        index = piece_list.index(white_pieces[i])
+        if white_pieces[i] == 'pawn':
+            screen.blit(white_pawn, (white_locations[i][0]* 100 + 16, white_locations[i][1]*100 + 22))
+        else:
+            screen.blit(white_images[index], (white_locations[i][0]* 100 + 8, white_locations[i][1]*100 + 15))
+    # Black Pieces    
+    for i in range(len(black_pieces)):
+        index = piece_list.index(black_pieces[i])
+        if black_pieces[i] == 'pawn':
+            screen.blit(black_pawn, (black_locations[i][0]* 100 + 16, black_locations[i][1]*100 + 22))
+        else:
+            screen.blit(black_images[index], (black_locations[i][0]* 100 + 8, black_locations[i][1]*100 + 15))
+    
 
 # Main Game Loop
 run = True
@@ -115,6 +131,7 @@ while run:
     timer.tick(fps)
     screen.fill(dark_brown)
     draw_board()
+    draw_pieces()
     
     # Event handling
     for event in pygame.event.get():
