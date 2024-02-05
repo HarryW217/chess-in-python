@@ -145,6 +145,26 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        # If a mouse button is clicked and it is the left mouse button:
+            x_coordinate = event.pos[0] // 100
+            y_coordinate = event.pos[1] // 100
+            click_coordinates = (x_coordinate, y_coordinate)
+            if turn_step < 2:
+                if click_coordinates in white_locations:
+                    selection = white_locations.index(click_coordinates)
+                    if turn_step == 0:
+                        turn_step = 1
+                if click_coordinates is valid_moves and selection != 100:
+                    white_locations[selection] = click_coordinates
+                    if click_coordinates in black_locations:
+                        black_piece_index = black_locations.index(click_coordinates)
+                        captured_pieces_white.append(black_pieces[black_piece_index])
+                        black_pieces.pop(black_piece_index)
+                        black_locations.pop(black_piece_index)
+                
+            
+            
             
     pygame.display.flip()
 pygame.quit()
