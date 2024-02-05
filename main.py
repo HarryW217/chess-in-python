@@ -132,6 +132,8 @@ def draw_pieces():
                 pygame.draw.rect(screen, 'blue', [black_locations[i][0] * 100 + 1, black_locations[i][1] * 100 + 1, 
                                                  100, 100], 2)
     
+def check_options():
+    pass
 
 # Main Game Loop
 run = True
@@ -162,7 +164,11 @@ while run:
                         captured_pieces_white.append(black_pieces[black_piece_index])
                         black_pieces.pop(black_piece_index)
                         black_locations.pop(black_piece_index)
-                
+                    black_options = check_options() # Function yet to be built
+                    white_options = check_options() # Function yet to be built
+                    turn_step = 2
+                    selection = 100
+                    valid_moves = []
             
             
             
