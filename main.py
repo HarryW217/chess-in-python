@@ -132,10 +132,32 @@ def draw_pieces():
                 pygame.draw.rect(screen, 'blue', [black_locations[i][0] * 100 + 1, black_locations[i][1] * 100 + 1, 
                                                  100, 100], 2)
     
-def check_options():
-    pass
+def check_options(pieces, locations, turn):
+    moves_list = []
+    all_moves_list = []
+    for i in range((pieces)):
+        location = locations[i]
+        piece = pieces[i]
+        if piece == 'pawn':
+            moves_list = check_pawn(location, turn)
+        elif piece == 'rook':
+            moves_list = check_rook(location, turn)
+        elif piece == 'knight':
+            moves_list = check_knight(location, turn)
+        elif piece == 'bishop':
+            moves_list = check_bishop(location, turn)
+        elif piece == 'queen':
+            moves_list = check_queen(location, turn)
+        elif piece == 'king':
+            moves_list = check_king(location, turn)
+        all_moves_list.append(moves_list)
+    return all_moves_list
+
 
 # Main Game Loop
+black_options = check_options(black_pieces, black_locations, 'black') 
+white_options = check_options(white_pieces, white_locations, 'white') 
+
 run = True
 while run:
     timer.tick(fps)
@@ -164,8 +186,8 @@ while run:
                         captured_pieces_white.append(black_pieces[black_piece_index])
                         black_pieces.pop(black_piece_index)
                         black_locations.pop(black_piece_index)
-                    black_options = check_options(black_pieces, black_locations, 'black') # Function yet to be built
-                    white_options = check_options(white_pieces, white_locations, 'white') # Function yet to be built
+                    black_options = check_options(black_pieces, black_locations, 'black') 
+                    white_options = check_options(white_pieces, white_locations, 'white') 
                     turn_step = 2
                     selection = 100
                     valid_moves = []
@@ -181,8 +203,8 @@ while run:
                         captured_pieces_black.append(white_pieces[white_piece_index])
                         white_pieces.pop(white_piece_index)
                         white_locations.pop(white_piece_index)
-                    black_options = check_options(black_pieces, black_locations, 'black') # Function yet to be built
-                    white_options = check_options(white_pieces, white_locations, 'white') # Function yet to be built
+                    black_options = check_options(black_pieces, black_locations, 'black')
+                    white_options = check_options(white_pieces, white_locations, 'white') 
                     turn_step = 0
                     selection = 100
                     valid_moves = []
