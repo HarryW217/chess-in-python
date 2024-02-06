@@ -162,11 +162,9 @@ def check_pawn(position, color):
         if (position[0], position[1]+2) not in white_locations and \
         (position[0], position[1]+2) not in black_locations and position[1]==1:
             moves_list.append((position[0],position[1]+2))
-        if (position[0]+1, position[1]+1) not in white_locations and \
-        (position[0]+1, position[1]+1) not in black_locations and position[0]<7:
+        if (position[0]+1, position[1]+1) in black_locations:
             moves_list.append((position[0]+1, position[1]+1))
-        if (position[0]-1, position[1]+1) not in white_locations and \
-        (position[0]-1, position[1]+1) not in black_locations and position[0]>0:
+        if (position[0]-1, position[1]+1) in black_locations:
             moves_list.append((position[0]-1, position[1]+1))
     else:
         if (position[0], position[1]-1) not in white_locations and \
@@ -175,16 +173,19 @@ def check_pawn(position, color):
         if (position[0], position[1]-2) not in white_locations and \
         (position[0], position[1]-2) not in black_locations and position[1]==6:
             moves_list.append((position[0],position[1]-2))
-        if (position[0]-1, position[1]-1) not in white_locations and \
-        (position[0]-1, position[1]-1) not in black_locations and position[0]>0:
-            moves_list.append((position[0]+1, position[1]+1))
-        if (position[0]+1, position[1]-1) not in white_locations and \
-        (position[0]+1, position[1]-1) not in black_locations and position[0]<7:
+        if (position[0]-1, position[1]-1) in white_locations:
+            moves_list.append((position[0]-1, position[1]-1))
+        if (position[0]+1, position[1]-1) in white_locations:
             moves_list.append((position[0]+1, position[1]-1))
     return moves_list
             
-def draw_valid():
-    pass
+def draw_valid(moves):
+    if turn_step < 2:
+        color = 'red'
+    else:
+        color = 'blue'
+    for i in range(len(moves)):
+        pygame.draw.circle(screen, color, (moves[i][0] * 100 + 50, moves[i][1]*100 + 50), 5)
 
 # Checks valid moves for just the selected piece
 def check_valid_moves():
@@ -206,9 +207,9 @@ while run:
     draw_board()
     draw_pieces()
     
-    # if selection != 100:
-    #     valid_moves = check_valid_moves()
-    #     draw_valid(valid_moves)
+    if selection != 100:
+        valid_moves = check_valid_moves()
+        draw_valid(valid_moves)
     
     # Event handling
     for event in pygame.event.get():
@@ -224,7 +225,7 @@ while run:
                     selection = white_locations.index(click_coordinates)
                     if turn_step == 0:
                         turn_step = 1
-                if click_coordinates is valid_moves and selection != 100:
+                if click_coordinates in valid_moves and selection != 100:
                     white_locations[selection] = click_coordinates
                     if click_coordinates in black_locations:
                         black_piece_index = black_locations.index(click_coordinates)
@@ -236,12 +237,12 @@ while run:
                     turn_step = 2
                     selection = 100
                     valid_moves = []
-            if turn_step >= 2:
+            if turn_step > 1:
                 if click_coordinates in black_locations:
                     selection = black_locations.index(click_coordinates)
                     if turn_step == 2:
                         turn_step = 3
-                if click_coordinates is valid_moves and selection != 100:
+                if click_coordinates in valid_moves and selection != 100:
                     black_locations[selection] = click_coordinates
                     if click_coordinates in white_locations:
                         white_piece_index = white_locations.index(click_coordinates)
@@ -253,7 +254,5 @@ while run:
                     turn_step = 0
                     selection = 100
                     valid_moves = []
-            
-            
     pygame.display.flip()
 pygame.quit()
