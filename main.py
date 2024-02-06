@@ -25,7 +25,7 @@ black_pieces = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight',
 black_locations = [(0,7), (1,7), (2,7), (3,7), (4,7), (5,7), (6,7), (7,7),
                    (0,6), (1,6), (2,6), (3,6), (4,6), (5,6), (6,6), (7,6)]
 captured_pieces_white = []
-captured_pieces_white = []
+captured_pieces_black = []
 
 turn_step = 0 # Keeps track of the phase of each turn
 # 0 - White's turn, no selection; 1 - White's turn, piece selected;
@@ -164,12 +164,28 @@ while run:
                         captured_pieces_white.append(black_pieces[black_piece_index])
                         black_pieces.pop(black_piece_index)
                         black_locations.pop(black_piece_index)
-                    black_options = check_options() # Function yet to be built
-                    white_options = check_options() # Function yet to be built
+                    black_options = check_options(black_pieces, black_locations, 'black') # Function yet to be built
+                    white_options = check_options(white_pieces, white_locations, 'white') # Function yet to be built
                     turn_step = 2
                     selection = 100
                     valid_moves = []
-            
+            if turn_step >= 2:
+                if click_coordinates in black_locations:
+                    selection = black_locations.index(click_coordinates)
+                    if turn_step == 2:
+                        turn_step = 3
+                if click_coordinates is valid_moves and selection != 100:
+                    black_locations[selection] = click_coordinates
+                    if click_coordinates in white_locations:
+                        white_piece_index = white_locations.index(click_coordinates)
+                        captured_pieces_black.append(white_pieces[white_piece_index])
+                        white_pieces.pop(white_piece_index)
+                        white_locations.pop(white_piece_index)
+                    black_options = check_options(black_pieces, black_locations, 'black') # Function yet to be built
+                    white_options = check_options(white_pieces, white_locations, 'white') # Function yet to be built
+                    turn_step = 0
+                    selection = 100
+                    valid_moves = []
             
             
     pygame.display.flip()
