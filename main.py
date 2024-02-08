@@ -140,8 +140,8 @@ def check_options(pieces, locations, turn):
         piece = pieces[i]
         if piece == 'pawn':
             moves_list = check_pawn(location, turn)
-        # elif piece == 'rook':
-        #     moves_list = check_rook(location, turn)
+        elif piece == 'rook':
+            moves_list = check_rook(location, turn)
         # elif piece == 'knight':
         #     moves_list = check_knight(location, turn)
         # elif piece == 'bishop':
@@ -178,7 +178,42 @@ def check_pawn(position, color):
         if (position[0]+1, position[1]-1) in white_locations:
             moves_list.append((position[0]+1, position[1]-1))
     return moves_list
-            
+
+def check_rook(position, color):
+    moves_list = []
+    if color == 'white':
+        enemies = black_locations
+        friends = white_locations
+    else:
+        friends = black_locations
+        enemies = white_locations
+    for i in range(4): # down, up, right, left
+        path = True
+        chain = 1
+        if i == 0:
+            x = 0
+            y = 1
+        elif i == 1:
+            x = 0
+            y = -1
+        elif i == 2:
+            x = 1
+            y = 0
+        else:
+            x = -1
+            y = 0
+        while path: 
+            if (position[0] + (chain * x), position[1] + (chain * y)) not in friends and \
+                    0 <= position[0] + (chain * x) <= 7 and 0 <= position[1] + (chain * y) <= 7:
+                moves_list.append((position[0] + (chain * x), position[1] + (chain * y)))
+                if (position[0] + (chain * x), position[1] + (chain * y)) in enemies:
+                    path = False
+                chain += 1
+            else:
+                path = False
+    return moves_list
+        
+
 def draw_valid(moves):
     if turn_step < 2:
         color = 'red'
