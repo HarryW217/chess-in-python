@@ -142,8 +142,8 @@ def check_options(pieces, locations, turn):
             moves_list = check_pawn(location, turn)
         elif piece == 'rook':
             moves_list = check_rook(location, turn)
-        # elif piece == 'knight':
-        #     moves_list = check_knight(location, turn)
+        elif piece == 'knight':
+            moves_list = check_knight(location, turn)
         # elif piece == 'bishop':
         #     moves_list = check_bishop(location, turn)
         # elif piece == 'queen':
@@ -213,6 +213,20 @@ def check_rook(position, color):
                 path = False
     return moves_list
         
+def check_knight(position, color):
+    moves_list = []
+    if color == 'white':
+        friends = white_locations
+    else:
+        friends = black_locations
+    # A Knight can go travel to up to 8 squares, all two squares 
+    # in one direction and one in another:
+    targets = [(1,2), (1,-2), (2,1), (2,-1), (-1,2), (-1,-2), (-2,1), (-2,-1)]
+    for i in range(len(targets)):
+        target = (position[0]+targets[i][0], position[1]+targets[i][1])
+        if target not in friends and 0 <= target[0] <=7 and 0 <= target[1] <=7:
+            moves_list.append(target)
+    return moves_list
 
 def draw_valid(moves):
     if turn_step < 2:
