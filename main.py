@@ -144,8 +144,8 @@ def check_options(pieces, locations, turn):
             moves_list = check_rook(location, turn)
         elif piece == 'knight':
             moves_list = check_knight(location, turn)
-        # elif piece == 'bishop':
-        #     moves_list = check_bishop(location, turn)
+        elif piece == 'bishop':
+            moves_list = check_bishop(location, turn)
         # elif piece == 'queen':
         #     moves_list = check_queen(location, turn)
         # elif piece == 'king':
@@ -226,6 +226,40 @@ def check_knight(position, color):
         target = (position[0]+targets[i][0], position[1]+targets[i][1])
         if target not in friends and 0 <= target[0] <=7 and 0 <= target[1] <=7:
             moves_list.append(target)
+    return moves_list
+
+def check_bishop(position, color):
+    moves_list = []
+    if color == 'white':
+        enemies = black_locations
+        friends = white_locations
+    else:
+        friends = black_locations
+        enemies = white_locations
+    for i in range(4): # up-right, up-left, down-right, down-left
+        path = True
+        chain = 1
+        if i == 0:
+            x = 1
+            y = -1
+        elif i == 1:
+            x = -1
+            y = -1
+        elif i == 2:
+            x = 1
+            y = 1
+        else:
+            x = -1
+            y = 1
+        while path: 
+            if (position[0] + (chain * x), position[1] + (chain * y)) not in friends and \
+                    0 <= position[0] + (chain * x) <= 7 and 0 <= position[1] + (chain * y) <= 7:
+                moves_list.append((position[0] + (chain * x), position[1] + (chain * y)))
+                if (position[0] + (chain * x), position[1] + (chain * y)) in enemies:
+                    path = False
+                chain += 1
+            else:
+                path = False
     return moves_list
 
 def draw_valid(moves):
