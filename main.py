@@ -148,8 +148,8 @@ def check_options(pieces, locations, turn):
             moves_list = check_bishop(location, turn)
         elif piece == 'queen':
             moves_list = check_queen(location, turn)
-        # elif piece == 'king':
-        #     moves_list = check_king(location, turn)
+        elif piece == 'king':
+            moves_list = check_king(location, turn)
         all_moves_list.append(moves_list)
     return all_moves_list
 
@@ -262,11 +262,26 @@ def check_bishop(position, color):
                 path = False
     return moves_list
 
-def check_queen(position,color):
+def check_queen(position, color):
     moves_list = check_bishop(position,color)
     second_list = check_rook(position,color)
     for move in second_list:
         moves_list.append(move)
+    return moves_list
+
+def check_king(position, color):
+    moves_list = []
+    if color == 'white':
+        friends = white_locations
+    else:
+        friends = black_locations
+    targets = [(0,-1), (1,-1), (1,0), (1,1), (0,1), (-1,1), (-1,0), (-1,-1)]
+    # Note: I have written the for loop slightly differently than in the similar 
+    # check_knight function in an effort to experiment with different syntactic approaches!
+    for target in targets:
+        current_target = (position[0]+target[0], position[1]+target[1])
+        if current_target not in friends and 0 <= current_target[0] <=7 and 0 <= current_target[1] <=7:
+            moves_list.append(current_target)
     return moves_list
 
 def draw_valid(moves):
