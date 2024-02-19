@@ -146,8 +146,8 @@ def check_options(pieces, locations, turn):
             moves_list = check_knight(location, turn)
         elif piece == 'bishop':
             moves_list = check_bishop(location, turn)
-        # elif piece == 'queen':
-        #     moves_list = check_queen(location, turn)
+        elif piece == 'queen':
+            moves_list = check_queen(location, turn)
         # elif piece == 'king':
         #     moves_list = check_king(location, turn)
         all_moves_list.append(moves_list)
@@ -260,6 +260,13 @@ def check_bishop(position, color):
                 chain += 1
             else:
                 path = False
+    return moves_list
+
+def check_queen(position,color):
+    moves_list = check_bishop(position,color)
+    second_list = check_rook(position,color)
+    for move in second_list:
+        moves_list.append(move)
     return moves_list
 
 def draw_valid(moves):
