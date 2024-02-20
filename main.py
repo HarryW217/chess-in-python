@@ -81,8 +81,8 @@ small_black_images = [black_pawn_small, black_queen_small, black_king_small, bla
 
 piece_list = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop']
 
-# check variables/ flashing counter
-
+# check variables / flashing counter
+counter = 0
 
 # RGB values for colors
 
@@ -311,6 +311,9 @@ def check_valid_moves():
     valid_options = options_list[selection]
     return valid_options
 
+def draw_check():
+    pass
+
 # Main Game Loop
 black_options = check_options(black_pieces, black_locations, 'black') 
 white_options = check_options(white_pieces, white_locations, 'white') 
@@ -318,10 +321,15 @@ white_options = check_options(white_pieces, white_locations, 'white')
 run = True
 while run:
     timer.tick(fps)
+    if counter < 30:
+        counter += 1
+    else:
+        counter = 0
     screen.fill(dark_brown)
     draw_board()
     draw_pieces()
     draw_captured()
+    draw_check()
     
     if selection != 100:
         valid_moves = check_valid_moves()
@@ -351,11 +359,7 @@ while run:
                     black_options = check_options(black_pieces, black_locations, 'black') 
                     white_options = check_options(white_pieces, white_locations, 'white') 
                     turn_step = 2
-                    selection = 100
-                    valid_moves = []
-            if turn_step > 1:
-                if click_coordinates in black_locations:
-                    selection = black_locations.index(click_coordinates)
+                    selection = 100counterions.index(click_coordinates)
                     if turn_step == 2:
                         turn_step = 3
                 if click_coordinates in valid_moves and selection != 100:
