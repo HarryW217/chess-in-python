@@ -292,6 +292,16 @@ def draw_valid(moves):
     for i in range(len(moves)):
         pygame.draw.circle(screen, color, (moves[i][0] * 100 + 50, moves[i][1]*100 + 50), 5)
 
+def draw_captured():
+    for i in range(len(captured_pieces_white)):
+        captured_piece = captured_pieces_white[i]
+        index = piece_list.index(captured_piece)
+        screen.blit(small_black_images[index], (825,5 + 50*i))
+    for i in range(len(captured_pieces_black)):
+        captured_piece = captured_pieces_black[i]
+        index = piece_list.index(captured_piece)
+        screen.blit(small_white_images[index], (925,5 + 50*i))
+
 # Checks valid moves for just the selected piece
 def check_valid_moves():
     if turn_step < 2:
@@ -311,6 +321,7 @@ while run:
     screen.fill(dark_brown)
     draw_board()
     draw_pieces()
+    draw_captured()
     
     if selection != 100:
         valid_moves = check_valid_moves()
