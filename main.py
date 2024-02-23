@@ -311,27 +311,75 @@ def check_valid_moves():
     valid_options = options_list[selection]
     return valid_options
 
-def draw_check():
-    if turn_step < 2:
+def draw_check_and_handle_checkmate():
+    is_checked = False
+    
+    if turn_step < 2: # We have just had black's turn
         if 'king' in white_pieces:
             king_index = white_pieces.index('king')
             king_location = white_locations[king_index]
+            
             for i in range(len(black_options)):
                 if king_location in black_options[i]:
-                    if counter < 15:
-                        pygame.draw.rect(screen, 'dark red', [white_locations[king_index][0]* 100 + 1,
-                                                            white_locations[king_index][1]* 100 + 1, 100, 100],5)
+                    is_checked = True
+                    if counter < 15:  
+                        pygame.draw.rect(screen, 'dark red', [king_location[0]*100 + 1, king_location[1]*100 + 1, 100, 100], 5)
+            
+            if is_checked:
+                king_cannot_move = False
+                invalid_moves_total = 0
+                kings_moves = check_king(king_location, 'white') 
+                for move in kings_moves: # For every move that the white King can make,
+                    for move_list in black_options: # we check every nested moves list in the black options,
+                        if move in move_list: # and if the white King's move is in one of these nested lists,
+                            invalid_moves_total += 1 # we add 1 to our total of invalid King moves
+                            break  # and break the loop to avoid unneccessary iterations for this move. 
+                if invalid_moves_total == len(kings_moves): # If the number of invalid moves matches the total number of King moves,
+                    king_cannot_move = True # then the King cannot move!
+                
+                other_pieces_cannot_move = False
+                # Logic needed to check if other pieces can block attacking team's pieces
+                # or take them out. 
+                
+                if king_cannot_move and other_pieces_cannot_move:
+                    draw_game_over('black')
                     
-    else:
+    else: # We have just had white's turn
         if 'king' in black_pieces:
             king_index = black_pieces.index('king')
             king_location = black_locations[king_index]
+            
             for i in range(len(white_options)):
                 if king_location in white_options[i]:
-                    if counter < 15:
-                        pygame.draw.rect(screen, 'dark blue', [black_locations[king_index][0]* 100 + 1,
-                                                            black_locations[king_index][1]* 100 + 1, 100, 100],5)
+                    is_checked = True
+                    if counter < 15:  
+                        pygame.draw.rect(screen, 'dark red', [king_location[0]*100 + 1, king_location[1]*100 + 1, 100, 100], 5)
+            
+            if is_checked:
+                king_cannot_move = False
+                invalid_moves_total = 0
+                kings_moves = check_king(king_location, 'black')  
+                for move in kings_moves:
+                    for move_list in white_options:
+                        if move in move_list:
+                            invalid_moves_total += 1
+                            break 
+                if invalid_moves_total == len(kings_moves):
+                    king_cannot_move = True
+                
+                other_pieces_cannot_move = False
+                # Logic needed to check if other pieces can block attacking team's pieces
+                # or take them out. 
+                
+                if king_cannot_move and other_pieces_cannot_move:
+                    draw_game_over('white')
+
   
+def draw_game_over(winner):
+    pygame.draw.rect(screen, 'black', [200, 200, 400, 70])
+    screen.blit(font.render(f'{winner} won the game!', True, 'white'), (210, 210))
+    screen.blit(font.render(f'Press ENTER to Restart!', True, 'white'), (210, 240))
+
 
 # Main Game Loop
 black_options = check_options(black_pieces, black_locations, 'black') 
@@ -348,8 +396,8 @@ while run:
     draw_board()
     draw_pieces()
     draw_captured()
-    draw_check()
-    
+    draw_check_and_handle_checkmate()
+
     if selection != 100:
         valid_moves = check_valid_moves()
         draw_valid(valid_moves)
