@@ -337,9 +337,17 @@ def draw_check_and_handle_checkmate():
                 if invalid_moves_total == len(kings_moves): # If the number of invalid moves matches the total number of King moves,
                     king_cannot_move = True # then the King cannot move!
                 
-                other_pieces_cannot_move = False
-                # Logic needed to check if other pieces can block attacking team's pieces
-                # or take them out. 
+                other_pieces_cannot_move = True
+                # We can try using the check_queen function to get all the positions relative to
+                # a King where it might be checked
+                king_danger_zones = check_queen(king_location, 'white')
+                for i in range(len(white_options)-1):
+                    for move in white_options[i]:
+                        for zone in king_danger_zones:
+                            if move in zone:
+                                other_pieces_cannot_move = False
+                                break
+                
                 
                 if king_cannot_move and other_pieces_cannot_move:
                     draw_game_over('black')
@@ -367,9 +375,15 @@ def draw_check_and_handle_checkmate():
                 if invalid_moves_total == len(kings_moves):
                     king_cannot_move = True
                 
-                other_pieces_cannot_move = False
-                # Logic needed to check if other pieces can block attacking team's pieces
-                # or take them out. 
+                other_pieces_cannot_move = True
+                king_danger_zones = check_queen(king_location, 'black')
+                for i in range(len(black_options)-1):
+                    for move in black_options[i]:
+                        for zone in king_danger_zones:
+                            if move in zone:
+                                other_pieces_cannot_move = False
+                                break
+                
                 
                 if king_cannot_move and other_pieces_cannot_move:
                     draw_game_over('white')
