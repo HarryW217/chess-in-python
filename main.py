@@ -10,6 +10,7 @@ WIDTH = 1000
 HEIGHT = 900
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 font = pygame.font.Font(font_path, 20)
+medium_font = pygame.font.Font(font_path, 40)
 big_font = pygame.font.Font(font_path, 50)
 timer = pygame.time.Clock()
 fps = 60
@@ -109,6 +110,7 @@ def draw_board():
         for i in range(9):
             pygame.draw.line(screen, 'black', ((100*i),0),((100*i),800))
             pygame.draw.line(screen, 'black', (0,(100*i)),(800,(100*i)))
+        screen.blit(medium_font.render("FORFEIT", True, "black"), (815, 830))
             
 def draw_pieces():
     # White Pieces
@@ -334,13 +336,10 @@ def draw_check():
                     if counter < 15:  
                         pygame.draw.rect(screen, 'dark red', [king_location[0]*100 + 1, king_location[1]*100 + 1, 100, 100], 5)
 
-
-  
 def draw_game_over():
     pygame.draw.rect(screen, 'black', [200, 200, 400, 70])
     screen.blit(font.render(f'{winner} won the game!', True, 'white'), (210, 210))
     screen.blit(font.render(f'Press ENTER to Restart!', True, 'white'), (210, 240))
-
 
 # Main Game Loop
 black_options = check_options(black_pieces, black_locations, 'black') 
