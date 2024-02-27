@@ -83,6 +83,8 @@ piece_list = ['pawn', 'queen', 'king', 'knight', 'rook', 'bishop']
 
 # check variables / flashing counter
 counter = 0
+winner = ""
+game_over = False
 
 # RGB values for colors
 
@@ -334,7 +336,7 @@ def draw_check():
 
 
   
-def draw_game_over(winner):
+def draw_game_over():
     pygame.draw.rect(screen, 'black', [200, 200, 400, 70])
     screen.blit(font.render(f'{winner} won the game!', True, 'white'), (210, 210))
     screen.blit(font.render(f'Press ENTER to Restart!', True, 'white'), (210, 240))
@@ -365,7 +367,7 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and not game_over:
         # If a mouse button is clicked and it is the left mouse button:
             x_coordinate = event.pos[0] // 100
             y_coordinate = event.pos[1] // 100
@@ -380,6 +382,8 @@ while run:
                     if click_coordinates in black_locations:
                         black_piece_index = black_locations.index(click_coordinates)
                         captured_pieces_white.append(black_pieces[black_piece_index])
+                        if black_pieces[black_piece_index]== "king":
+                            winner = "white"
                         black_pieces.pop(black_piece_index)
                         black_locations.pop(black_piece_index)
                     black_options = check_options(black_pieces, black_locations, 'black') 
@@ -397,6 +401,8 @@ while run:
                     if click_coordinates in white_locations:
                         white_piece_index = white_locations.index(click_coordinates)
                         captured_pieces_black.append(white_pieces[white_piece_index])
+                        if white_pieces[white_piece_index]== "king":
+                            winner = "black"
                         white_pieces.pop(white_piece_index)
                         white_locations.pop(white_piece_index)
                     black_options = check_options(black_pieces, black_locations, 'black')
@@ -404,5 +410,9 @@ while run:
                     turn_step = 0
                     selection = 100
                     valid_moves = []
+                    
+    if winner != "":
+        game_over = True
+        draw_game_over()
     pygame.display.flip()
 pygame.quit()
