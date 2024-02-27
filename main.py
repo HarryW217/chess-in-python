@@ -337,19 +337,22 @@ def draw_check_and_handle_checkmate():
                 if invalid_moves_total == len(kings_moves): # If the number of invalid moves matches the total number of King moves,
                     king_cannot_move = True # then the King cannot move!
                 
-                other_pieces_cannot_move = True
+                pieces_cannot_attack = True
+                king_danger_zones = check_queen(king_location, 'white') 
                 # We can try using the check_queen function to get all the positions relative to
                 # a King where it might be checked
-                king_danger_zones = check_queen(king_location, 'white')
-                for i in range(len(white_options)-1):
-                    for move in white_options[i]:
-                        for zone in king_danger_zones:
-                            if move in zone:
-                                other_pieces_cannot_move = False
-                                break
-                
-                
-                if king_cannot_move and other_pieces_cannot_move:
+                attacking_pieces_locations = []
+                for zone in king_danger_zones:
+                    if zone in black_locations:
+                        attacking_pieces_locations.append(zone)
+                for i in range(len(white_options)):
+                    options = white_options[i]
+                    for i in range(len(options)):
+                        if options[i] in attacking_pieces_locations:
+                            pieces_cannot_attack = False
+                            break
+                            
+                if king_cannot_move and pieces_cannot_attack:
                     draw_game_over('black')
                     
     else: # We have just had white's turn
@@ -375,17 +378,22 @@ def draw_check_and_handle_checkmate():
                 if invalid_moves_total == len(kings_moves):
                     king_cannot_move = True
                 
-                other_pieces_cannot_move = True
-                king_danger_zones = check_queen(king_location, 'black')
-                for i in range(len(black_options)-1):
-                    for move in black_options[i]:
-                        for zone in king_danger_zones:
-                            if move in zone:
-                                other_pieces_cannot_move = False
-                                break
-                
-                
-                if king_cannot_move and other_pieces_cannot_move:
+                pieces_cannot_attack = True
+                king_danger_zones = check_queen(king_location, 'black') 
+                # We can try using the check_queen function to get all the positions relative to
+                # a King where it might be checked
+                attacking_pieces_locations = []
+                for zone in king_danger_zones:
+                    if zone in white_locations:
+                        attacking_pieces_locations.append(zone)
+                for i in range(len(black_options)):
+                    options = black_options[i]
+                    for i in range(len(options)):
+                        if options[i] in attacking_pieces_locations:
+                            pieces_cannot_attack = False
+                            break
+                            
+                if king_cannot_move and pieces_cannot_attack:
                     draw_game_over('white')
 
   
