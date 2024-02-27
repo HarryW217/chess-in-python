@@ -110,7 +110,7 @@ def draw_board():
         for i in range(9):
             pygame.draw.line(screen, 'black', ((100*i),0),((100*i),800))
             pygame.draw.line(screen, 'black', (0,(100*i)),(800,(100*i)))
-        screen.blit(medium_font.render("FORFEIT", True, "black"), (815, 830))
+        screen.blit(medium_font.render("RESIGN", True, "black"), (815, 830))
             
 def draw_pieces():
     # White Pieces
@@ -372,6 +372,10 @@ while run:
             y_coordinate = event.pos[1] // 100
             click_coordinates = (x_coordinate, y_coordinate)
             if turn_step < 2:
+                # <--- RESIGN BUTTON --->
+                if click_coordinates == (8,8) or click_coordinates == (9,8):
+                    winner = "black"
+                # <--- RESIGN BUTTON --->
                 if click_coordinates in white_locations:
                     selection = white_locations.index(click_coordinates)
                     if turn_step == 0:
@@ -391,6 +395,10 @@ while run:
                     selection = 100
                     valid_moves = []
             if turn_step > 1:
+                # <--- RESIGN BUTTON --->
+                if click_coordinates == (8,8) or click_coordinates == (9,8):
+                    winner = "white"
+                # <--- RESIGN BUTTON --->
                 if click_coordinates in black_locations:
                     selection = black_locations.index(click_coordinates)
                     if turn_step == 2:
@@ -411,19 +419,18 @@ while run:
                     valid_moves = []
         if event.type == pygame.KEYDOWN and game_over:
             if event.key == pygame.K_RETURN:
-                game_over == False
+                game_over = False
                 winner = ""
                 white_pieces = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
-                'pawn','pawn','pawn','pawn','pawn','pawn','pawn','pawn']
+                                'pawn','pawn','pawn','pawn','pawn','pawn','pawn','pawn']
                 white_locations = [(0,0), (1,0), (2,0), (3,0), (4,0), (5,0), (6,0), (7,0),
-                   (0,1), (1,1), (2,1), (3,1), (4,1), (5,1), (6,1), (7,1)]
+                                    (0,1), (1,1), (2,1), (3,1), (4,1), (5,1), (6,1), (7,1)]
                 black_pieces = ['rook', 'knight', 'bishop', 'king', 'queen', 'bishop', 'knight', 'rook',
-                'pawn','pawn','pawn','pawn','pawn','pawn','pawn','pawn']
+                                'pawn','pawn','pawn','pawn','pawn','pawn','pawn','pawn']
                 black_locations = [(0,7), (1,7), (2,7), (3,7), (4,7), (5,7), (6,7), (7,7),
-                   (0,6), (1,6), (2,6), (3,6), (4,6), (5,6), (6,6), (7,6)]
+                                    (0,6), (1,6), (2,6), (3,6), (4,6), (5,6), (6,6), (7,6)]
                 captured_pieces_white = []
                 captured_pieces_black = []
-                counter = 0
                 turn_step = 0
                 selection = 100
                 valid_moves = []
